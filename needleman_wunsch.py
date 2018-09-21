@@ -46,16 +46,16 @@ class Alignment(Dictionary):
         print('score :', self.__maxi._value)
         current = self.__maxi._current
         prev = self.__maxi._prev
-
+        
         # Add post indels sequence_1
-        for i in range(self.__rows - current.row):
-            new_sequence_1 = self.__sequence_1[self.__rows - i - 1] + new_sequence_1
-            new_sequence_2 = '-' + new_sequence_2
-        # Add post indels sequence_2
         for i in range(self.__cols - current.col):
             new_sequence_1 = '-' + new_sequence_1
             new_sequence_2 = self.__sequence_2[self.__cols - i - 1] + new_sequence_2
-        
+	# Add post indels sequence_2
+        for i in range(self.__rows - current.row):
+            new_sequence_1 = self.__sequence_1[self.__rows - i - 1] + new_sequence_1
+            new_sequence_2 = '-' + new_sequence_2        
+
         # Traceback
         while self.__maxi._current is not None:
             direction = self.__direction()
@@ -76,14 +76,14 @@ class Alignment(Dictionary):
                 new_sequence_2 = self.__sequence_2[prev.col] + new_sequence_2
             self.__maxi = self.__matrix[prev.row][prev.col]
 
-        # Add pre char indels sequence_1
-        for i in range(1, current.row):
-            new_sequence_1 = self.__sequence_1[current.row - i - 1] + new_sequence_1
-            new_sequence_2 = '-' + new_sequence_2
-        # Add pre char indels sequence_1
+	# Add pre indels sequence_1
         for i in range(1, current.col):
             new_sequence_1 = '-' + new_sequence_1
             new_sequence_2 = self.__sequence_2[current.col - i - 1] + new_sequence_2
+        # Add pre indels sequence_2
+        for i in range(1, current.row):
+            new_sequence_1 = self.__sequence_1[current.row - i - 1] + new_sequence_1
+            new_sequence_2 = '-' + new_sequence_2
 
         print(new_sequence_1)
         print(new_sequence_2)
