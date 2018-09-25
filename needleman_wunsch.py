@@ -1,12 +1,16 @@
 
 class Coordinates:
-    pass
+    def __str__(self):
+        return '({},{})'.format(self.col, self.row)
 
 class Data:
     
     def __init__(self):
         self._current = Coordinates()
         self._prev = Coordinates()
+
+    def __str__(self):
+        return '{}'.format(self._value)
 
 class Dictionary:
 
@@ -37,7 +41,19 @@ class Alignment(Dictionary):
         self.__cols = len(sequence_2)
         self.__init_matrix()
         self.__find_max_value()
+        self.__show_matrix()
         self.__new_sequence()
+
+    def __show_matrix(self):
+        # Print score
+        for i in range(self.__rows + 1):
+            for j in range(self.__cols + 1):
+                print(self.__matrix[i][j], end='\n' if j == self.__cols else '\t')
+        print()
+        # Print Prev coor
+        for i in range(self.__rows + 1):
+            for j in range(self.__cols + 1):
+                print(self.__matrix[i][j]._prev if not(i==0 or j==0) else None, end='\n' if j == self.__cols else '\t')
 
     def __new_sequence(self):
         new_sequence_1 = ''
@@ -51,7 +67,7 @@ class Alignment(Dictionary):
         for i in range(self.__cols - current.col):
             new_sequence_1 = '-' + new_sequence_1
             new_sequence_2 = self.__sequence_2[self.__cols - i - 1] + new_sequence_2
-	# Add post indels sequence_2
+	    # Add post indels sequence_2
         for i in range(self.__rows - current.row):
             new_sequence_1 = self.__sequence_1[self.__rows - i - 1] + new_sequence_1
             new_sequence_2 = '-' + new_sequence_2        
@@ -76,7 +92,7 @@ class Alignment(Dictionary):
                 new_sequence_2 = self.__sequence_2[prev.col] + new_sequence_2
             self.__maxi = self.__matrix[prev.row][prev.col]
 
-	# Add pre indels sequence_1
+	    # Add pre indels sequence_1
         for i in range(1, current.col):
             new_sequence_1 = '-' + new_sequence_1
             new_sequence_2 = self.__sequence_2[current.col - i - 1] + new_sequence_2
